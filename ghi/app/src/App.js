@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainPage from './MainPage';
 import Nav from './Nav';
 import { useState, useEffect } from 'react';
-import ShoesList from './ShoesList';
+import ShoesList from './ListShoes';
 import CreateShoe from './CreateShoe';
 
 function App() {
