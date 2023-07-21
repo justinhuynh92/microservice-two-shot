@@ -1,9 +1,12 @@
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainPage from './MainPage';
 import Nav from './Nav';
 import { useState, useEffect } from 'react';
 import ShoesList from './ListShoes';
 import CreateShoe from './CreateShoe';
+import HatForm from './HatsForms';
+import HatsList from './HatsList';
 
 function App() {
 
@@ -21,6 +24,46 @@ function App() {
   useEffect(() => {
     getShoes();
   }, []);
+
+  const [hats, setHats] = useState([]);
+  const [locations, setLocations] = useState([])
+
+  const getHats = async () => {
+    const hatUrl = 'http://localhost:8090/api/locations'
+    const hatResponse = await fetch(hatUrl);
+
+    if (hatResponse.ok) {
+      const data = await hatResponse.json();
+      const hats = data.hats
+      setHats(hats)
+    }
+  }
+
+  const getLocations = async () => {
+    const locationUrl = 'http://localhost8100/api/locations'
+    const locationResponse = await fetch(locationUrl);
+
+    if (locationResponse.ok) {
+      const data = await locationResponse.json();
+      const locations = data.locations
+      setLocations(locations)
+    }
+  }
+
+  useEffect( () => {
+    getHats();
+    getLocations();
+  }, [
+    setHats,
+    setLocations,
+  ]
+  )
+  console.log("These are the hats", hats);
+  console.log("These are the locations", locations);
+
+  if (hats === undefined && locations === undefined) {
+    return null;
+  }
 
   return (
     <BrowserRouter>
