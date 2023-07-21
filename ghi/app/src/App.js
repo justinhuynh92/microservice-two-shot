@@ -2,10 +2,29 @@ import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainPage from './MainPage';
 import Nav from './Nav';
+import { useState, useEffect } from 'react';
+import ShoesList from './ListShoes';
+import CreateShoe from './CreateShoe';
 import HatForm from './HatsForms';
 import HatsList from './HatsList';
 
 function App() {
+
+  const [ shoes, setShoes ] = useState([]);
+
+  async function getShoes() {
+    const url = 'http://localhost:8080/api/shoes/';
+    const response = await fetch(url);
+    if (response.ok) {
+      const data = await response.json();
+      setShoes(data.shoes);
+    }
+  }
+
+  useEffect(() => {
+    getShoes();
+  }, []);
+
   const [hats, setHats] = useState([]);
   const [locations, setLocations] = useState([])
 
@@ -52,14 +71,6 @@ function App() {
       <div className="container">
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="hats">
-            <Routh path="" element={<HatsList hats={hats} getHats={getHats} />}/>
-            <Route path="new" element={<HatForm getHats={getHats} />} />
-          </Route>
-          <Route path="locations">
-            <Route path="" element={<LocationsList locations={locations} getLocations={getLocations} />} />
-            <Route path="new" element={<LocationForm getLocations={getLocations}/>} />
-          </Route>
         </Routes>
       </div>
     </BrowserRouter>
