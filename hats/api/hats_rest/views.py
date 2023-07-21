@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from .models import Hat, LocationVO
 from common.json import ModelEncoder
 from django.http import JsonResponse
@@ -10,6 +9,8 @@ class LocationVOEncoder(ModelEncoder):
     properties = [
         "import_href",
         "closet_name",
+        "section_number",
+        "shelf_number",
     ]
 
 class HatsDetailEncoder(ModelEncoder):
@@ -20,6 +21,7 @@ class HatsDetailEncoder(ModelEncoder):
         "color",
         "picture_url",
         "location",
+        "id",
     ]
     encoders = {
         "location": LocationVOEncoder(),
@@ -34,6 +36,9 @@ class HatsListEncoder(ModelEncoder):
         "picture_url",
         "id",
     ]
+    encoders = {
+        "location": LocationVOEncoder(),
+    }
 
     def get_extra_data(self, o):
         return {"location": o.location.closet_name}
@@ -61,9 +66,9 @@ def api_list_hats(request, location_vo_id=None):
                 {"message": "Invalid location id"},
                 status=400,
             )
-        hats = Hat.objects.create(**content)
+        hat = Hat.objects.create(**content)
         return JsonResponse(
-            hats,
+            hat,
             encoder=HatsDetailEncoder,
             safe=False,
         )
@@ -86,7 +91,7 @@ def api_show_hat(request, pk):
     elif request.method == "DELETE":
         count, _ = Hat.objects.filter(id=pk).delete()
         return JsonResponse(
-            {"delete": count > 0}
+            {"deleted": count > 0}
         )
     else:
         content = json.loads(request.body)
