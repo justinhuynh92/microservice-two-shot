@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainPage from './MainPage';
 import Nav from './Nav';
-import { useState, useEffect } from 'react';
 import ShoesList from './ListShoes';
 import CreateShoe from './CreateShoe';
 import HatForm from './HatsForms';
 import HatsList from './HatsList';
 
 function App() {
-
-  const [ shoes, setShoes ] = useState([]);
+  const [shoes, setShoes] = useState([]);
 
   async function getShoes() {
     const url = 'http://localhost:8080/api/shoes/';
@@ -26,38 +24,35 @@ function App() {
   }, []);
 
   const [hats, setHats] = useState([]);
-  const [locations, setLocations] = useState([])
+  const [locations, setLocations] = useState([]);
 
   const getHats = async () => {
-    const hatUrl = 'http://localhost:8090/api/locations'
+    const hatUrl = 'http://localhost:8100/api/locations/';
     const hatResponse = await fetch(hatUrl);
 
     if (hatResponse.ok) {
       const data = await hatResponse.json();
-      const hats = data.hats
-      setHats(hats)
+      const hats = data.hats;
+      setHats(hats);
     }
-  }
+  };
 
   const getLocations = async () => {
-    const locationUrl = 'http://localhost8100/api/locations'
+    const locationUrl = 'http://localhost:8100/api/locations/';
     const locationResponse = await fetch(locationUrl);
 
     if (locationResponse.ok) {
       const data = await locationResponse.json();
-      const locations = data.locations
-      setLocations(locations)
+      const locations = data.locations;
+      setLocations(locations);
     }
-  }
+  };
 
-  useEffect( () => {
+  useEffect(() => {
     getHats();
     getLocations();
-  }, [
-    setHats,
-    setLocations,
-  ]
-  )
+  }, [setHats, setLocations]);
+
   console.log("These are the hats", hats);
   console.log("These are the locations", locations);
 
@@ -72,7 +67,9 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="shoes" element={<ShoesList shoes={shoes} getShoes={getShoes} />} />
-          <Route path="create-shoe" element={<CreateShoe getShoes={getShoes}  />} />
+          <Route path="create-shoe" element={<CreateShoe getShoes={getShoes} />} />
+          <Route path="hats" element={<HatsList hats={hats} getHats={getHats} />} />
+          <Route path="create-hat" element={<HatForm getHats={getHats} />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -63,7 +63,7 @@ function HatForm({getHats}) {
     }
 
     const fetchData = async () => {
-        const locationUrl = 'http://localhost8100/api/locations/';
+        const locationUrl = 'http://localhost:8100/api/locations/';
 
         const locationResponse = await fetch(locationUrl)
 
