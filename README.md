@@ -9,8 +9,7 @@ Justin - Hats Microservice
 
 ## Shoes microservice
 
-Explain your models and integration with the wardrobe
-microservice, here.
+I made a shoe detail model, bin model/enconder. The shoe detail model passes information to the warddrobe api to render a list of created Shoes, create shoes after the form is filled out. And the location encoder has bins in the drop down menu of my shoes form as it communicates with the wardrobe api.
 
 ## Hats microservice
 
